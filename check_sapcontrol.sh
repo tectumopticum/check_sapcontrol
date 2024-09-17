@@ -133,13 +133,13 @@ case $TYPE in
   ABAP_ENQ)
      regstring="enserver"
 #     OUTPUT=$(/usr/sap/hostctrl/exe/sapcontrol -host $HOST -nr $NR -function GetProcessList|grep "enserver")
-     OUTPUT=$($sapctl -host "$HOST" -nr "$NR" -function $functiontype|grep $regstring)
+     OUTPUT=$($sapctl -host "$HOST" -nr "$SCSNR" -function $functiontype|grep $regstring)
      STATE=$(echo "$OUTPUT"|$awkpath 'NF{print $3}'|$sedpath 's/,//g')
      ;;
   ABAP_MSG)
      regstring="msg_server"
 #     OUTPUT=$(/usr/sap/hostctrl/exe/sapcontrol -host $HOST -nr $NR -function GetProcessList|grep "msg_server")
-     OUTPUT=$($sapctl -host "$HOST" -nr "$NR" -function $functiontype|grep $regstring)
+     OUTPUT=$($sapctl -host "$HOST" -nr "$SCSNR" -function $functiontype|grep $regstring)
      STATE=$(echo "$OUTPUT"|$awkpath 'NF{print $3}'|$sedpath 's/,//g')
      ;;
   ABAP_GW)
@@ -157,14 +157,14 @@ case $TYPE in
      ;;
   JAVA_ENQ)
      regstring="enserver"
-#     OUTPUT=$(/usr/sap/hostctrl/exe/sapcontrol -host $HOST -nr $NR -function GetProcessList|grep "enserver")
-     OUTPUT=$($sapctl -host "$HOST" -nr "$NR" -function $functiontype|grep $regstring)
+#     OUTPUT=$(/usr/sap/hostctrl/exe/sapcontrol -host $HOST -nr $SCSNR -function GetProcessList|grep "enserver")
+     OUTPUT=$($sapctl -host "$HOST" -nr "$SCSNR" -function $functiontype|grep $regstring)
      STATE=$(echo "$OUTPUT"|$awkpath 'NF{print $3}'|$sedpath 's/,//g')
      ;;
   JAVA_MSG)
      regstring="msg_server"
-#     OUTPUT=$(/usr/sap/hostctrl/exe/sapcontrol -host $HOST -nr $NR -function GetProcessList|grep "msg_server")
-     OUTPUT=$($sapctl -host "$HOST" -nr "$NR" -function $functiontype|grep $regstring)
+#     OUTPUT=$(/usr/sap/hostctrl/exe/sapcontrol -host $HOST -nr $SCSNR -function GetProcessList|grep "msg_server")
+     OUTPUT=$($sapctl -host "$HOST" -nr "$SCSNR" -function $functiontype|grep $regstring)
      STATE=$(echo "$OUTPUT"|$awkpath 'NF{print $3}'|$sedpath 's/,//g')
      ;;
   JAVA_GW)
@@ -182,32 +182,29 @@ case $TYPE in
   JAVA_SRV0)
      regstring="server0"
      functiontype="J2EEGetProcessList"
-#     OUTPUT=$(/usr/sap/hostctrl/exe/sapcontrol -host $HOST -nr $NR -function J2EEGetProcessList|grep "server0")
-     OUTPUT=$($sapctl -host "$HOST" -nr "$NR" -function $functiontype|grep $regstring)
-     # 20230925, i007163, non-default fuctiontype
-     functiontype=J2EEGetProcessList
-     #OUTPUT=$($sapctl -host $HOST -nr $NR -function $functiontype|grep "server0")
+#     OUTPUT=$(/usr/sap/hostctrl/exe/sapcontrol -host $HOST -nr $SCSNR -function J2EEGetProcessList|grep "server0")
+     OUTPUT=$($sapctl -host "$HOST" -nr "$SCSNR" -function $functiontype|grep $regstring)
      STATE=$(echo "$OUTPUT"|$awkpath 'NF{print $9}'|$sedpath 's/,//g')
      ;;
   JAVA_SRV1)
      regstring="server1"
      functiontype="J2EEGetProcessList"
-#     OUTPUT=$(/usr/sap/hostctrl/exe/sapcontrol -host $HOST -nr $NR -function J2EEGetProcessList|grep "server1")
-     OUTPUT=$($sapctl -host "$HOST" -nr "$NR" -function $functiontype|grep $regstring)
+#     OUTPUT=$(/usr/sap/hostctrl/exe/sapcontrol -host $HOST -nr $SCSNR -function J2EEGetProcessList|grep "server1")
+     OUTPUT=$($sapctl -host "$HOST" -nr "$SCSNR" -function $functiontype|grep $regstring)
      STATE=$(echo "$OUTPUT"|$awkpath 'NF{print $9}'|$sedpath 's/,//g')
      ;;
   JAVA_SRV2)
      regstring="server2"
      functiontype="J2EEGetProcessList"
-#     OUTPUT=$(/usr/sap/hostctrl/exe/sapcontrol -host $HOST -nr $NR -function J2EEGetProcessList|grep "server2")
-     OUTPUT=$($sapctl -host "$HOST" -nr "$NR" -function $functiontype|grep $regstring)
+#     OUTPUT=$(/usr/sap/hostctrl/exe/sapcontrol -host $HOST -nr $SCSNR -function J2EEGetProcessList|grep "server2")
+     OUTPUT=$($sapctl -host "$HOST" -nr "$SCSNR" -function $functiontype|grep $regstring)
      STATE=$(echo "$OUTPUT"|$awkpath 'NF{print $9}'|$sedpath 's/,//g')
      ;;
   JAVA_SRV3)
      regstring="server3"
      functiontype="J2EEGetProcessList"
-#     OUTPUT=$(/usr/sap/hostctrl/exe/sapcontrol -host $HOST -nr $NR -function J2EEGetProcessList|grep "server3")
-     OUTPUT=$($sapctl -host "$HOST" -nr "$NR" -function $functiontype|grep $regstring)
+#     OUTPUT=$(/usr/sap/hostctrl/exe/sapcontrol -host $HOST -nr $SCSNR -function J2EEGetProcessList|grep "server3")
+     OUTPUT=$($sapctl -host "$HOST" -nr "$SCSNR" -function $functiontype|grep $regstring)
      STATE=$(echo "$OUTPUT"|$awkpath 'NF{print $9}'|$sedpath 's/,//g')
      ;;
   JAVA_SRV)
@@ -221,7 +218,7 @@ case $TYPE in
        then
          mapfile myArray < "./ifile_JAVA_SRV.txt"
      else
-         mapfile myArray < <($sapctl -host $HOST -nr $NR -function $functiontype | grep $regstring)
+         mapfile myArray < <($sapctl -host $HOST -nr $SCSNR -function $functiontype | grep $regstring)
      fi
 
      if [[ "$verbose" -gt 1 ]]
