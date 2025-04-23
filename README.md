@@ -15,3 +15,19 @@ Options:
 ```
 
  If you're using this script as plugin for Icinga2 or other Nagios-based checks, you need to set appropriate sudo-rights for the "icinga"-user and add it to the local "sapsys"-group
+
+The "SAP-systemtype"-paramter ('-T') checks the following SAP-products/processes:  
+| Parameter | SAP-Name | Process |
+| :---: | :---: | :---: |
+| ABAP_DW | ABAP Primary Application Server (PAS) ("dispatcher and workprocesses") | disp+work |
+| ABAP_ENQ | ABAP Primary Application Server: Enqueue Server ("SAP Enqueue Server") | enserver |
+| ABAP_GW | ABAP Primary Application Server: Gateway ("SAP Gateway")| gwrd |
+| ABAP_ICM | ABAP Primary Application Server: ICM ("Internet Communication Manager")| icman |
+| ABAP_MSG | ABAP Primary Application Server: Message Server| msg_server |
+| HDB_NS | SAP HANA DB: Nameserver| Nameserver |
+| HDB_IDX | SAP HANA DB: Indexserver | Index |
+| JAVA_MSG | J2EE "Message Server" | msg_server |
+| JAVA_ENQ | J2EE | enserver |
+| JAVA_GW | J2EE : "Gateway Read Process" | gwrd |
+| JAVA_JSTART | J2EE Server  | jstart |
+| JAVA_SRV | J2EE Server | server0 |

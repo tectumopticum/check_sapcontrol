@@ -211,7 +211,7 @@ case $TYPE in
      badjava=0   # Bad Java Services
      goodjava=0  # Good Java Services
      declare -a myJavaServers
-
+     
      readarray myJavaServers < <($sapctl -host $HOST -nr $SCSNR -function $functiontype | grep $regstring)
 
      if [[ "$verbose" -gt 1 ]]
