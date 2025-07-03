@@ -130,11 +130,11 @@ case $TYPE in
      ;;
   ABAP_ENQ)
      #found at least 2 different names in proclist for enq-server -> we need a regex
-     regstring="enq_server|enserver"
+     regstring='enq_server|enserver'
      #OUTPUT=$(/usr/sap/hostctrl/exe/sapcontrol -host $HOST -nr $NR -function GetProcessList|grep "enserver")
      OUTPUT=$($sapctl -host "$HOST" -nr "$SCSNR" -function $functiontype)
      # awk must remove leading/trailing blanks
-     STATE=$(echo "$OUTPUT"|grep -E $regstring|$awkpath -F, "match($3, /\w+/) { print substr($3, RSTART, RLENGTH )}")
+     STATE=$(echo "$OUTPUT"|grep -E $regstring|$awkpath -F, 'match($3, /\w+/) { print substr($3, RSTART, RLENGTH )}')
      ;;
   ABAP_MSG)
      regstring="msg_server"
