@@ -1,6 +1,6 @@
 #!/bin/bash
 
-version=1.3
+version=1.4
 verbose=0
 # mandatory parameters:
 hostflag=0
@@ -128,12 +128,13 @@ case $TYPE in
      OUTPUT=$($sapctl -host "$HOST" -nr "$NR" -function $functiontype)
      STATE=$(echo "$OUTPUT"|grep $regstring|$awkpath 'NF{print $3}'|$sedpath 's/,//g')
      ;;
-
   ABAP_ENQ)
-     regstring="enserver"
+     #found at least 2 different names in proclist for enq-server -> we need a regex
+     regstring='enq_server|enserver'
      #OUTPUT=$(/usr/sap/hostctrl/exe/sapcontrol -host $HOST -nr $NR -function GetProcessList|grep "enserver")
      OUTPUT=$($sapctl -host "$HOST" -nr "$SCSNR" -function $functiontype)
-     STATE=$(echo "$OUTPUT"|grep $regstring|$awkpath 'NF{print $3}'|$sedpath 's/,//g')
+     # awk must remove leading/trailing blanks
+     STATE=$(echo "$OUTPUT"|grep -E $regstring|$awkpath -F, 'match($3, /\w+/) { print substr($3, RSTART, RLENGTH )}')
      ;;
   ABAP_MSG)
      regstring="msg_server"
@@ -362,12 +363,12 @@ fi
 if [[ "$STATE" == "" ]] || [[ "$STATE" == "NOTFOUND" ]]
   then
     STATE=NOTFOUND
-    echo "UNKNOWN - sapcontrol-state for $regstring (Tenant-ID: $TENANTID) is $STATE"
+    echo "WARNING - sapcontrol-state for $regstring (Tenant-ID: $TENANTID) is $STATE"
     if [[ "$verbose" -eq 1 ]]
     then
        echo "$OUTPUT"
     fi
-    exit "$STATE_UNKNOWN"
+    exit "$STATE_WARNING"
 elif [[ "$STATE" == "GREEN" ]] || [[ "$STATE" == "Running" ]]
   then
     #echo -e "\033[42m\033[30mOK\033[0m"
